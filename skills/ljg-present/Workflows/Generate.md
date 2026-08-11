@@ -1,6 +1,6 @@
 # Generate Workflow
 
-把 Orgmode、Markdown 或纯文本铸成 outline-faithful 单文件 HTML 演示。
+把 Markdown 或纯文本铸成 outline-faithful 单文件 HTML 演示。
 
 ## 1. Announce
 

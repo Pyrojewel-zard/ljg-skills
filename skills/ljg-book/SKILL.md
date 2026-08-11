@@ -1,6 +1,6 @@
 ---
 name: ljg-book
-description: "Book reader for one durable takeaway. Turns a book into one book-grounded change in what the reader notices, asks, does, or refrains from doing. USE WHEN the user gives a book title, PDF, excerpt, or asks 拆书, 分析这本书, 这本书在讲什么, 压缩一本书, or book. Defaults to a saved org note. NOT FOR chapter summaries, papers, single-idea deep dives, or field ranking."
+description: "Book reader for one durable takeaway. Turns a book into one book-grounded change in what the reader notices, asks, does, or refrains from doing. USE WHEN the user gives a book title, PDF, excerpt, or asks 拆书, 分析这本书, 这本书在讲什么, 压缩一本书, or book. Defaults to a saved markdown note. NOT FOR chapter summaries, papers, single-idea deep dives, or field ranking."
 user_invocable: true
 ---
 
@@ -16,13 +16,13 @@ user_invocable: true
 
 | 输入 | 必读 | 输出 |
 |---|---|---|
-| 书名 | 查到可靠材料后读 `ReadingGuide.md` | 保存 org 笔记 |
-| PDF、正文、样章、旧笔记 | 先读材料，再读 `ReadingGuide.md` | 保存 org 笔记 |
+| 书名 | 查到可靠材料后读 `ReadingGuide.md` | 保存 markdown 笔记 |
+| PDF、正文、样章、旧笔记 | 先读材料，再读 `ReadingGuide.md` | 保存 markdown 笔记 |
 | 用户明确只要口头解释 | `ReadingGuide.md` | 不写文件，按同一路径讲 |
 
-写 org 文件时再读 `references/template.org`。默认保存到 `~/Documents/notes/`。
+写 markdown 文件时再读 `references/template.md`。默认保存到 `notes/`（项目根 `notes/` 目录）。
 
-文件名沿用 Denote：`{YYYYMMDDTHHMMSS}--拆书-{书名}__book.org`；时间戳用 `date +%Y%m%dT%H%M%S` 生成。
+文件名沿用 Denote：`{YYYYMMDDTHHMMSS}--拆书-{书名}__book.md`；时间戳用 `date +%Y%m%dT%H%M%S` 生成。
 
 ## Completion Target
 
@@ -60,16 +60,16 @@ user_invocable: true
 
 开头固定三行：
 
-1. `- *问题*：...`
-2. `- *洞见*：...`
-3. `- *变化*：下次当 X 出现，我先 Z，而不是 Y。`
+1. `- **问题**：...`
+2. `- **洞见**：...`
+3. `- **变化**：下次当 X 出现，我先 Z，而不是 Y。`
 
 顶层章节固定为：
 
-1. `* 它在解决什么`
-2. `* 它让我看见什么`
-3. `* 下一次，哪里会不同`
-4. `* 资料校准`
+1. `# 它在解决什么`
+2. `# 它让我看见什么`
+3. `# 下一次，哪里会不同`
+4. `# 资料校准`
 
 ## Examples
 

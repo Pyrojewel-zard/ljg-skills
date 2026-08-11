@@ -1,6 +1,6 @@
 ---
 name: ljg-present
-description: "演讲铸造器（Outline-Faithful）。把 orgmode/markdown outline 1:1 铸成单文件离线 HTML；支持 black/red/yellow 与静态 hacker（--hacker，--cyber 兼容别名），自动处理标题封面、多行密度布局、表格、ASCII、LaTeX、自适应与翻页笔。USE WHEN 用户要求讲这个、present、做成演讲、slides、标语流、宣言体、slogan、manifesto、按 outline 美化。NOT FOR 内容提炼、改写或企业 PPT。"
+description: "演讲铸造器（Outline-Faithful）。把 markdown outline 1:1 铸成单文件离线 HTML；支持 black/red/yellow 与静态 hacker（--hacker，--cyber 兼容别名），自动处理标题封面、多行密度布局、表格、ASCII、LaTeX、自适应与翻页笔。USE WHEN 用户要求讲这个、present、做成演讲、slides、标语流、宣言体、slogan、manifesto、按 outline 美化。NOT FOR 内容提炼、改写或企业 PPT。"
 user_invocable: true
 version: "4.0.0"
 ---
@@ -17,7 +17,7 @@ version: "4.0.0"
 - 表格不改结构，example/代码块不改空格与换行。
 - 所有源元素按原顺序出现；不抽提、不浓缩、不重排。
 - 唯一允许改变的是物理分页与视觉构图。
-- `#+title:` 是文档标题，必须先生成独立 cover；第一个 outline 节点仍在下一页。若两者文字完全相同，可合并为 cover，不能重复。
+- YAML frontmatter 的 `title:` 或第一个 H1 是文档标题，必须先生成独立 cover；第一个 outline 节点仍在下一页。若两者文字完全相同，可合并为 cover，不能重复。
 
 ## Workflow Routing
 
@@ -31,7 +31,7 @@ version: "4.0.0"
 
 ### 输入与输出
 
-- 输入：Orgmode、Markdown 或纯文本。
+- 输入：Markdown 或纯文本。
 - 输出：`~/Downloads/{title}.html`，单文件、离线、无外链资源。
 - 首屏：文档标题 cover。
 - Header：不承载任何信息。
@@ -39,7 +39,7 @@ version: "4.0.0"
 
 ### Theme
 
-优先级：显式参数 > `#+filetags:` > 默认 `black`。
+优先级：显式参数 > YAML frontmatter 的 `tags:` > 默认 `black`。
 
 | 参数 | theme | 调性 |
 |---|---|---|
@@ -63,14 +63,14 @@ Hacker 不是「整篇黑底绿字」。它只有三种主色：
 
 | Source | Page |
 |---|---|
-| `* 一级标题` | 独占 emphasis 章节页 |
-| `**` 及更深标题 | 独占 title 页；深度越高字号越低 |
+| `# 一级标题` | 独占 emphasis 章节页 |
+| `##` 及更深标题 | 独占 title 页；深度越高字号越低 |
 | 段落 | theme 文本页；仅在必要时物理拆页 |
 | 列表 | 同一逻辑块 1–4 项同页，保留序号与 indent |
 | 表格 | table 页；超过 6 行分页并重复表头 |
 | 引用 | quote 页，保留原始段落关系 |
-| `#+begin_example` / fenced code | pre 页，逐字符保留 |
-| `*强调*` / `~code~` / `=verbatim=` | `hl: true`；emphasis 页忽略 inline hl |
+| fenced code | pre 页，逐字符保留 |
+| `**强调**` / `` `code` `` | `hl: true`；emphasis 页忽略 inline hl |
 
 ### 多行不是统一降字号
 
@@ -132,7 +132,7 @@ Validator 负责静态契约：模板版本、JS 语法、标题 cover、header/
 ### Example 1：常规 outline 演示
 
 ```text
-User: 用 ljg-present 讲这个 ~/Documents/notes/talk.org
+User: 用 ljg-present 讲这个 notes/talk.md
 → 读取 Generate workflow、RenderingSpec 与 SloganTemplate
 → 保留全部 outline，生成标题 cover 与 black/red/yellow 主题页面
 → 运行 ValidateDeck，再输出 ~/Downloads/<title>.html
@@ -141,7 +141,7 @@ User: 用 ljg-present 讲这个 ~/Documents/notes/talk.org
 ### Example 2：静态 Hacker 演示
 
 ```text
-User: 把这篇 org 做成 Hacker style，不要动效
+User: 把这篇 markdown 做成 Hacker style，不要动效
 → 选择 --hacker，普通页浅底、章节页深底
 → 按行数与密度生成 duo/triptych/rows/matrix
 → 验证零动效、公式、footer、自适应与翻页笔

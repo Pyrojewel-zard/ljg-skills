@@ -21,13 +21,13 @@ Manifest 顺序就是原稿顺序：
 
 | Source | Output |
 |---|---|
-| `#+title:` / Markdown H1 metadata | `<title>` 与 cover 主内容 |
-| `#+author:`、`#+date:` 或用户给出的 meta | subtitle/meta footer |
-| `#+filetags:` | theme inference |
+| YAML `title:` / Markdown H1 | `<title>` 与 cover 主内容 |
+| YAML `author:`、`date:` 或用户给出的 meta | subtitle/meta footer |
+| YAML `tags:` | theme inference |
 
 Cover 规则：
 
-- `#+title:` 始终产生第 1 页 `cover:true`。
+- YAML `title:` / H1 始终产生第 1 页 `cover:true`。
 - 第一个 outline 节点保持为后续页面。
 - 仅当第一个节点的纯文本与 title 完全相同，才把该节点升级为 cover，避免重复。
 - Cover 不占 source manifest ID；合并时保留节点原 sourceId。
@@ -73,7 +73,7 @@ Chrome 规则：
 }
 ```
 
-`table.header` 由 Org 横线语义或 Markdown separator row 推断。不要无条件把第一行当表头；那会改变无表头表格的含义。
+`table.header` 由 Markdown separator row 推断。不要无条件把第一行当表头；那会改变无表头表格的含义。
 
 ## 4. Theme Grammar
 
