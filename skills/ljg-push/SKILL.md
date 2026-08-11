@@ -1,18 +1,18 @@
 ---
 name: ljg-push
-description: 把 ~/.codex/skills/ljg-* 里所有更新过的 skills 同步到 github repo (ljg-skills)，单分支推送（markdown 输出风格）。Use when user says '/ljg-push', 'push skills', '推送 skills', '同步 skills', 'sync ljg', or whenever ljg-* skills get updated and need shipping. NOT FOR pushing non-ljg skills or arbitrary git repos.
+description: 把 ~/.agents/skills/ljg-* 里所有更新过的 skills 同步到 github repo (ljg-skills)，单分支推送（markdown 输出风格）。Use when user says '/ljg-push', 'push skills', '推送 skills', '同步 skills', 'sync ljg', or whenever ljg-* skills get updated and need shipping. NOT FOR pushing non-ljg skills or arbitrary git repos.
 user_invocable: true
 ---
 
 # ljg-push: 推送 ljg-* skills
 
-把本地 `~/.codex/skills/ljg-*` 里改过的 skills，一键同步到 github repo，推送到 master 分支。
+把本地 `~/.agents/skills/ljg-*` 里改过的 skills，一键同步到 github repo，推送到 master 分支。
 
 ## 仓库路径（硬编码）
 
 ```
 SKILLS_REPO="$HOME/code/ljg-skills"     # 本地工作 repo
-SKILLS_LOCAL="$HOME/.codex/skills"      # 本地 skill 源
+SKILLS_LOCAL="$HOME/.agents/skills"      # 本地 skill 源
 REPO_URL="git@github.com:lijigang/ljg-skills.git"
 ```
 
@@ -22,7 +22,7 @@ REPO_URL="git@github.com:lijigang/ljg-skills.git"
 
 只有一种 markdown 风格：`.md` 文件、`**bold**` 加粗、YAML frontmatter。
 
-`~/.codex/skills/` 里的 skill 是源版本。本地工作 repo 应始终停在 master 分支。
+`~/.agents/skills/` 里的 skill 是源版本。本地工作 repo 应始终停在 master 分支。
 
 ## 工作流
 
@@ -32,7 +32,7 @@ REPO_URL="git@github.com:lijigang/ljg-skills.git"
 
 每次 push 前，脚本强制做一件事：*把 README 跟 local skills 对一遍*。
 
-- 列出 `~/.codex/skills/ljg-*` 全部 skill 名
+- 列出 `~/.agents/skills/ljg-*` 全部 skill 名
 - grep `$SKILLS_REPO/README.md` 里出现的 `ljg-xxx`
 - 找出 local 有但 README 没有的——*几乎肯定意味着 README 漏更新*
 - 命中 → push 中止，报告差异
@@ -70,7 +70,7 @@ curl -s -X POST http://localhost:31337/notify \
 
 ```
 User: /ljg-push
-→ 检测 ~/.codex/skills/ljg-* 中跟 repo 有差异的 skills
+→ 检测 ~/.agents/skills/ljg-* 中跟 repo 有差异的 skills
 → rsync + bump version + commit + push
 → 报告：哪些 skills 推了，新版本号
 ```
@@ -91,4 +91,4 @@ User: /ljg-push --dry-run
 - *untracked 杂物（如 `assets/measure.js`）会被 rsync 同步到 repo*——如果不想推，先在本地删掉，或加进 `.gitignore`
 - *脚本会自动 bump patch version 在 plugin.json + marketplace.json*——如果你想 bump minor / major，先手动改完再跑脚本，脚本只追加 patch
 - *如果 master 远端比本地新（继刚另一台机器推过）*，脚本会 `pull --rebase`，失败时报错让用户处理
-- *当前路径*：skill 源固定在 `~/.codex/skills/`，工作 repo 固定在 `~/code/ljg-skills/`；不要从历史备份目录读取或推送
+- *当前路径*：skill 源固定在 `~/.agents/skills/`，工作 repo 固定在 `~/code/ljg-skills/`；不要从历史备份目录读取或推送
