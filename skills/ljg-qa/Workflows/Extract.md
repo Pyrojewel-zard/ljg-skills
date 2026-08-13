@@ -132,58 +132,60 @@ date +%Y%m%dT%H%M%S         # → identifier
 date "+%Y-%m-%d %a %H:%M"   # → date 字段
 ```
 
-denote schema 文件名：`{YYYYMMDDTHHMMSS}--qa-{主题}__qa.org`
+denote schema 文件名：`{YYYYMMDDTHHMMSS}--qa-{主题}__qa.md`
 
 - `qa-` 前缀：标记 Q-A 类型（与 ljg-paper 的 `paper-` 同构）
 - 主题：核心论点的 5-10 字提炼，去标点。优先用方法名/概念名/灵魂句关键字
-- `__qa` 后缀：keyword tag，便于 denote 搜索
+- `__qa` 后缀：keyword tag，便于搜索
 
-输出路径：`~/Documents/notes/`
+输出路径：`notes/`（项目根 `notes/` 目录）
 
 写入后报告路径给用户。
 
 ## 文件结构
 
-```org
-#+title:      {一句精炼的核心观点——10-25 字}
-#+subtitle:   {原文标题}
-#+date:       [{YYYY-MM-DD Day HH:MM}]
-#+filetags:   :qa:
-#+identifier: {YYYYMMDDTHHMMSS}
-#+source:     {URL 或来源}
+```markdown
+---
+title: {一句精炼的核心观点——10-25 字}
+subtitle: {原文标题}
+date: [{YYYY-MM-DD Day HH:MM}]
+filetags: qa
+identifier: {YYYYMMDDTHHMMSS}
+source: {URL 或来源}
+---
 
-* 引子
+# 引子
 
 （一段话，3-5 句：这篇东西在讲什么，为什么值得拿出来问。带读者落地，不是综述）
 
-* Q1: {一句尖锐的问句，≤ 20 字}
+## Q1: {一句尖锐的问句，≤ 20 字}
 
-  *结论*：...
+**结论**：...
 
-  *形式化*：...（如 `A = B + C` / `旧: X → 新: Y`）
+**形式化**：...（如 `A = B + C` / `旧: X → 新: Y`）
 
-  *怎么想到的*：
-  - ...
-  - ...
-  - ...
+**怎么想到的**：
+- ...
+- ...
+- ...
 
-  *边界*：...
+**边界**：...
 
-* Q2: ...
+## Q2: ...
 
-  ...
+...
 
-* 收口
+# 收口
 
 （一句话压住整串 Q-A：作者真正贡献的那个东西是什么。不是总结，是命名）
 ```
 
 注意：
 
-- 加粗用 `*bold*`（org-mode），不用 `**bold**`（markdown）
-- 列表用 `- item`，不用 `* item`（`*` 在 org 是标题）
-- 分隔用空行或层级，不用 `---`
-- 代码用 `~code~` 或 `=code=`，不用反引号
+- 加粗用 `**bold**`（markdown），不用 `*bold*`（org-mode）
+- 标题用 `#`/`##`，不用 `*`（`*` 在 org 是标题）
+- 列表用 `- item`，与 markdown 一致
+- 代码用反引号 `` `code` ``
 
 ## 验收
 

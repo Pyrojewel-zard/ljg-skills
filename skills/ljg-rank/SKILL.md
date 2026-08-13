@@ -480,5 +480,5 @@ A ---> B ---> C ---> D
 ## 输出
 
 1. 获取时间戳：`date +%Y%m%dT%H%M%S` 和 `date "+%Y-%m-%d %a %H:%M"`
-2. 写入 `~/Documents/notes/{时间戳}--{领域}的秩__rank.org`
+2. 写入 `notes/{时间戳}--{领域}的秩__rank.md`（项目根 `notes/` 目录，与 ljg 系列统一；markdown 格式兼容 llm-wiki）
 3. 报告文件路径给用户
