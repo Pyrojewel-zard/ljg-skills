@@ -1,8 +1,8 @@
 ---
 name: ljg-card
-description: "Content caster (铸). Transforms text into PNG visuals through generated raster imagery plus precise HTML typography. Four molds: -l (default) long reading card, -m multi-card series, -c comic, -w whiteboard. USE WHEN user says '铸', 'cast', '做成图', '做成卡片', '做成海报', '漫画', or '白板'."
+description: "Content caster (铸). Transforms text into PNG visuals through generated raster imagery plus precise HTML typography. Three molds: -l (default) long reading card, -c comic, -w whiteboard. USE WHEN user says '铸', 'cast', '做成图', '做成卡片', '做成海报', '漫画', or '白板'."
 user_invocable: true
-version: "6.1.0"
+version: "7.0.0"
 ---
 
 # ljg-card：铸
@@ -13,8 +13,7 @@ version: "6.1.0"
 
 | 参数 | 模具 | 尺寸 | 图像角色 |
 |---|---|---|---|
-| `-l`（默认） | 长图 | 1080 × auto | 1–3 个结构性视觉锚点 |
-| `-m` | 多卡 | 1080 × 1440 | 同系列母题；每卡最多一幅主图 |
+| `-l`（默认） | 长图 · 静线叙事 | 1080 × auto | 1 个安静主场景；必要时追加至多 2 个连续视觉拍点 |
 | `-c` | 漫画 | 1080 × auto | 缺口驱动、同案重跑的漫画分镜 |
 | `-w` | 白板 | 1080 × auto | 概念隐喻与局部手绘物件 |
 
@@ -30,6 +29,12 @@ version: "6.1.0"
 4. 当前 HTML 模板
 
 不得跳过共享图像协议直接写提示词，也不得把一种 mode 的图像语法套给另一种。
+
+## 全局临时目录约束
+
+无论从哪个目录启动，制卡前都必须在 `/tmp` 下建立本任务独占的临时目录。生成图候选稿、用于组版的源图、HTML、CSS、矢量草稿、渲染输入、截图草稿、QA 切片、缓存与日志等所有中间产物，全部只能写入该目录。
+
+只有用户明确要求交付的最终文件可以写入 `/tmp` 之外。候选 PNG 和未通过验收的渲染结果仍属于中间产物。完成前检查当前目录和仓库没有遗留中间文件，最终交付物验收后清理本任务的临时目录。
 
 ## 共同生产线
 
@@ -71,7 +76,6 @@ bunx playwright install chromium
 ## Footer
 
 - `-l`、`-c`、`-w`：左侧保留 logo + 李继刚；右侧用 `{{SOURCE_LINE}}` 写明确来源，没有来源则替换为空字符串。
-- `-m`：保留页码信息，不新增来源推断。
 - logo 是既有品牌位图，不属于生成图，也不能拿来充当测试外的内容插图。
 
 ## mode 路由
@@ -79,12 +83,13 @@ bunx playwright install chromium
 | 参数 | mode 文件 | 模板 |
 |---|---|---|
 | `-l` | `references/mode-long.md` | `assets/long_template.html` |
-| `-m` | `references/mode-poster.md` | `assets/poster_template.html` |
 | `-c` | `references/mode-comic.md` | `assets/comic_template.html` |
 | `-w` | `references/mode-whiteboard.md` | `assets/whiteboard_template.html` |
 
 ## Gotchas
 
+- `-l` 的识别度来自「极简单线气质 + 漫画式可见变化 + 编辑式证据结构」。只做一张漂亮单幅会丢掉讲解，只做连续漫画会压过长文；具体路由以 `references/mode-long.md` 为准。
+- 稀疏线稿在局部裁图里清楚，放回整张长卡可能完全消失。`-l` 的代表图必须同时通过局部像素检查和整卡缩略检查；必要时只加粗轮廓，不连带更换隐喻、镜头或构图。
 - `-c` 的格数由认知因果拍点决定，不设固定范围。短内容不凑格，长内容不因模板删掉承重关系。
 - 漫画主画面负责让动作与结果可见；概念名、对白、旁白和证据分寸仍由 HTML/CSS 写准，不能让图片模型代写解释。
 - 同案重跑要求角色、道具与空间连续。每格换一套隐喻会切断前后比较，即使单格都好看也不成立。
@@ -92,7 +97,16 @@ bunx playwright install chromium
 
 ## Examples
 
-**Example 1：把技术概念铸成漫画**
+**Example 1：把论文或书铸成长图**
+
+```text
+User: 「把这篇论文做成卡片 -l」
+→ 用一个稳定人物或物件承载可见变化：论文走「问题→机制→证据→边界→决策」，书走「原状→压力→变化→余波」
+→ 生成图只画动作与隐喻；标题、数字、证据边界和结论由 HTML/CSS 写准
+→ 交付一张具有暖纸、稀疏黑线、单一暗红与完整阅读层级的 1080px PNG
+```
+
+**Example 2：把技术概念铸成漫画**
 
 ```text
 User: 「把这篇技术解释做成漫画 -c」
@@ -101,7 +115,7 @@ User: 「把这篇技术解释做成漫画 -c」
 → 最后从头运行完整模型，并留一个边界拍点
 ```
 
-**Example 2：把完整长文铸成漫画**
+**Example 3：把完整长文铸成漫画**
 
 ```text
 User: 「把这份已验收的完整笔记做成漫画 -c，不限格数」
@@ -123,4 +137,4 @@ bun run audit
 bun run fixtures
 ```
 
-第一条检查共享协议、四路引用、位图槽、空槽与禁用项；第二条在 `/tmp/ljg-card-v6-fixtures/` 生成四份最小代表 HTML，随后用 `capture.ts` 实际截图并读回 PNG。
+第一条检查共享协议、三路引用、位图槽、空槽与禁用项；第二条在 `/tmp/ljg-card-v7-fixtures/` 生成三份最小代表 HTML，随后用 `capture.ts` 实际截图并读回 PNG。
