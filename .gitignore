@@ -29,3 +29,7 @@ __pycache__/
 
 # 本地插件配置
 .claude/*.local.md
+
+# 本地维护的 pyrojewel 技能（从 pyrojewel_claude_code 同步，不被 git 跟踪避免 pull merge）
+skills/pyrojewel-paper-river/
+skills/pyrojewel-paper-river/**
